@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>In Use</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Currently in Use</h1>
+    <div id="user-info">
+        <p>User: {{ user }}</p>
+        <p>Time Left: <span id="time-left">{{ time_left }}</span> seconds</p>
+    </div>
+
+    <script>
+        $(function() {
+            function updateTimeLeft() {
+                $.get('/current_status', function(data) {
+                    $('#time-left').text(data.time_left);
+                    if (data.time_left <= 0) {
+                        location.reload();  // Reload the page when time is up
+                    }
+                });
+            }
+            setInterval(updateTimeLeft, 1000);  // Update time left every second
+        });
+    </script>
+</body>
+</html>

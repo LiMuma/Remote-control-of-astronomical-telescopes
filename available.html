@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Available</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <form id="request-form">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Request Access</button>
+    </form>
+    <div id="status"></div>
+
+    <script>
+        $(function() {
+            $('#request-form').submit(function(event) {
+                event.preventDefault();
+                var userName = $('#name').val();
+                $.post('/request_access', {name: userName}, function(data) {
+                    if (data.status === 'granted') {
+                        window.location.href = '/';
+                    } else if (data.status === 'queued') {
+                        $('#status').text('You are queued.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
